@@ -1,6 +1,10 @@
+package constraints.CoverSize;
+
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+
+import dataset.parsers.Dataset;
 
 public class CoverSize extends Constraint {
 	

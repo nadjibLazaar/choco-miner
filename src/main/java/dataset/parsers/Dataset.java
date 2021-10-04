@@ -48,13 +48,13 @@ public class Dataset {
 	// Dynamic number of transaction 
 	int Tran_maj;
 	//Complete transaction
-	BitSet complete;
+	public BitSet complete;
 	//Partitions
 	public ArrayList<ArrayList<Integer>> partition;
 	
 	
 	//Number of propagations
-	int propagationCount = 0;
+	public int propagationCount = 0;
 	
 	
 	//////////////////////////////////////////////////////////////////////////
