@@ -15,6 +15,8 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.events.IntEventType;
 import org.chocosolver.util.ESat;
 
+import dataset.parsers.Dataset;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;

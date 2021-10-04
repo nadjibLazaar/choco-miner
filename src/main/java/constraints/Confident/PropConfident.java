@@ -1,3 +1,5 @@
+package constraints.Confident;
+
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.constraints.Propagator;
@@ -7,6 +9,8 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.variables.events.IntEventType;
 import org.chocosolver.util.ESat;
+
+import dataset.parsers.Dataset;
 
 import java.util.BitSet;
 

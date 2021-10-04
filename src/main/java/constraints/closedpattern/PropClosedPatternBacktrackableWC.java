@@ -14,6 +14,8 @@ import org.chocosolver.solver.exception.ContradictionException;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.util.ESat;
 
+import dataset.parsers.Dataset;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;

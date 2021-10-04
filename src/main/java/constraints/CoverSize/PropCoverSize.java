@@ -1,3 +1,5 @@
+package constraints.CoverSize;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 
@@ -7,6 +9,8 @@ import org.chocosolver.solver.exception.ContradictionException;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.util.ESat;
+
+import dataset.parsers.Dataset;
 
 public class PropCoverSize extends Propagator<IntVar> {
 
