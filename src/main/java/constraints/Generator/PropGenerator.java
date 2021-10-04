@@ -1,3 +1,5 @@
+package constraints.Generator;
+
 
 import org.chocosolver.solver.Identity;
 import org.chocosolver.solver.Model;
@@ -13,6 +15,8 @@ import org.chocosolver.solver.variables.events.PropagatorEventType;
 import org.chocosolver.util.ESat;
 import org.chocosolver.util.objects.graphs.DirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
+
+import dataset.parsers.Dataset;
 
 import java.awt.Desktop.Action;
 import java.util.ArrayList;

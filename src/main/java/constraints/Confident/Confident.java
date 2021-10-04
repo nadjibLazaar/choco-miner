@@ -1,9 +1,13 @@
+package constraints.Confident;
+
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.constraints.Propagator;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+
+import dataset.parsers.Dataset;
 /**
  * 
  * @author bachir

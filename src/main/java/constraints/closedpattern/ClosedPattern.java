@@ -21,6 +21,9 @@ import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.exception.ContradictionException;
 import org.chocosolver.solver.variables.BoolVar;
 
+import dataset.parsers.Dataset;
+import util.Log;
+
 
 /************************
  * 

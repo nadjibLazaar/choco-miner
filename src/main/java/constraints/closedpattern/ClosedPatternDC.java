@@ -9,6 +9,8 @@ package constraints.closedpattern;
 import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.variables.BoolVar;
 
+import dataset.parsers.Dataset;
+
 /********************************************
  * 
  * ClosedPattern Constraint 
