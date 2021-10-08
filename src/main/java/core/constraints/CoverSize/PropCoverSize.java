@@ -1,4 +1,4 @@
-package constraints.CoverSize;
+package core.constraints.CoverSize;
 
 import java.util.ArrayList;
 import java.util.BitSet;

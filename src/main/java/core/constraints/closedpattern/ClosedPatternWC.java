@@ -1,4 +1,5 @@
-package constraints.closedpattern;
+package core.constraints.closedpattern;
+
 /*******************************************************************
  * This file is part of CPMiner project.
  *
@@ -13,13 +14,11 @@ import dataset.parsers.Dataset;
 
 /********************************************
  * 
- * ClosedPattern Constraint 
- * maintaining Domain Consistency
+ * ClosedPatternWC constraint
+ * maintaining a weak consistency
  * 
  *******************************************/
-
-
-public class ClosedPatternDC extends Constraint {
+public class ClosedPatternWC extends Constraint {
 
 	/*******************************************
 	 * 
@@ -28,9 +27,8 @@ public class ClosedPatternDC extends Constraint {
 	 * @param d  Datset
 	 * 
 	 *******************************************/
-	
-	public ClosedPatternDC(BoolVar[] X, double teta, Dataset d) {
-		super("ClosedPattern", new PropClosedPatternBacktrackable(X, teta, d));
+	public ClosedPatternWC(BoolVar[] X, double teta, Dataset d) {
+		super("ClosedPattern", new PropClosedPatternBacktrackableWC(X, teta, d));
 	}
 
 }

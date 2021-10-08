@@ -1,4 +1,4 @@
-package constraints.FrequentSubs;
+package core.constraints.FrequentSubs;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.constraints.Propagator;

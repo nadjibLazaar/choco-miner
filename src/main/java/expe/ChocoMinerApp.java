@@ -2,6 +2,7 @@ package expe;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -11,21 +12,22 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import core.enumtype.CM_Dataset;
+import core.enumtype.CM_Representation;
+import expe.Experience.ExpeBuilder;
+
 public class ChocoMinerApp {
 
 	private static String rep;
 	private static String dataset;
 	private static String query;
 	private static long timeout;
-	private static boolean normalizedCSP;
-	private static boolean shuffle;
-	private static int minsize, maxsize, forbiddenI, mandatoryI;
-	private static int maxqueries;
-	private static String instance;
-	private static String vls;
-	private static String vrs;
+	private static int minsize, maxsize;
+	private static ArrayList<Integer> forbiddenI = new ArrayList<Integer>();
+	private static ArrayList<Integer> mandatoryI = new ArrayList<Integer>();
+	private static ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
+	private static ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
 	private static boolean verbose;
-	private static boolean log_queries;
 	private static boolean gui;
 
 	public static void main(String args[]) throws IOException, ParseException {
@@ -46,6 +48,15 @@ public class ChocoMinerApp {
 
 		// defaults options
 
+		rep = CM_Representation.FIs.toString();
+		dataset = CM_Dataset.MUSHROOM.toString().toLowerCase();
+		String query = "";
+		timeout = 900000;
+		minsize = -1;
+		maxsize = -1;
+		verbose = false;
+		gui = false;
+
 		///////////////////////
 
 		// Check arguments and options
@@ -53,12 +64,9 @@ public class ChocoMinerApp {
 			checkOption(line, opt.getLongOpt());
 		}
 		// Build Experience
-		IExperience expe = new ExpeBuilder().setExpe(rep).setFile(dataset).setAlgo(mode).setMaxqueries(maxqueries)
-				.setExamplesFile(query).setPartition(partition).setNbThreads(nb_threads).setInstance(instance)
-				.setNormalizedCSP(normalizedCSP).setShuffle(shuffle).setTimeout(timeout).setHeuristic(heuristic)
-				.setVarSelector(vrs).setValSelector(vls).setVerbose(verbose).setPartition(partition)
-				.setDirectory(new File("src/fr/lirmm/coconut/quacq/bench/")).setQueries(log_queries).setGui(gui)
-				.build();
+		Experience expe = new Experience.ExpeBuilder().setRep(rep).setDataset(dataset).setQuery(query).setTimeout(timeout)
+				.setMinsize(minsize).setMaxsize(maxsize).setForbiddenI(forbiddenI).setMandatoryI(mandatoryI)
+				.setForbiddenIH(forbiddenIH).setMandatoryIH(mandatoryIH).setVerbose(verbose).setGui(gui).build();
 		// Launch Experience
 		expe.process();
 
@@ -90,18 +98,17 @@ public class ChocoMinerApp {
 				.desc("Patterns maximum size constraint").required(false).build();
 
 		final Option forbiddenOption = Option.builder("fi").longOpt("forbiddenitem").hasArg(false)
-				.desc("Forbidden item (body part in case of ARs)").required(false).build();
+				.desc("Forbidden item (body part in case of ARs) (can be used several times)").required(false).build();
 
 		final Option mandatoryOption = Option.builder("mi").longOpt("mandatoryitem").hasArg(false)
-				.desc("Mandatory item (body part in case of ARs)").required(false).build();
+				.desc("Mandatory item (body part in case of ARs) (can be used several times)").required(false).build();
 
 		final Option forbiddenhOption = Option.builder("fih").longOpt("forbiddenitemh").hasArg(false)
-				.desc("Forbidden item in AR head").required(false).build();
+				.desc("Forbidden item in AR head (can be used several times)").required(false).build();
 
 		final Option mandatoryhOption = Option.builder("mih").longOpt("mandatoryitemh").hasArg(false)
-				.desc("Mandatory item in AR head").required(false).build();
+				.desc("Mandatory item in AR head (can be used several times)").required(false).build();
 
-	
 		final Option guiOption = Option.builder("g").longOpt("gui").hasArg(false)
 				.desc("Specify this option to launch graphical user interface").required(false).build();
 
@@ -151,51 +158,24 @@ public class ChocoMinerApp {
 			maxsize = Integer.parseInt(line.getOptionValue(option));
 			break;
 		case "forbiddenitem":
-			forbiddenI = Integer.parseInt(line.getOptionValue(option));
+			forbiddenI.add(Integer.parseInt(line.getOptionValue(option)));
 			break;
 		case "mandatoryitem":
-			mandatoryI = Integer.parseInt(line.getOptionValue(option));
+			mandatoryI.add(Integer.parseInt(line.getOptionValue(option)));
 			break;
-	
-		
-		case "heuristic":
-			heuristic = getHeuristic(line.getOptionValue(option));
+		case "forbiddenitemh":
+			forbiddenIH.add(Integer.parseInt(line.getOptionValue(option)));
 			break;
-		case "notnormalized":
-			normalizedCSP = false;
+		case "mandatoryitemh":
+			mandatoryIH.add(Integer.parseInt(line.getOptionValue(option)));
 			break;
-		case "shuffle":
-			shuffle = true;
-			break;
-		case "partition":
-
-			partition = getPartition(line.getOptionValue(option));
-			break;
-		case "algo":
-			mode = getMode(line.getOptionValue(option));
-			break;
-		case "threads":
-			nb_threads = Integer.parseInt(line.getOptionValue(option));
-			break;
-		case "instance":
-			instance = line.getOptionValue(option);
-			break;
-		case "Vrs":
-			vrs = line.getOptionValue(option);
-			break;
-		case "Vls":
-			vls = line.getOptionValue(option);
+		case "gui":
+			gui = true;
 			break;
 		case "verbose":
 			verbose = true;
 			break;
-		case "queries":
-			log_queries = true;
-			break;
 
-		case "gui":
-			gui = true;
-			break;
 		default: {
 			System.err.println("Bad arg parameter: " + option);
 			System.exit(2);
@@ -203,57 +183,6 @@ public class ChocoMinerApp {
 
 		}
 
-	}
-
-	public static ACQ_Partition getPartition(String name) {
-
-		switch (name) {
-		case "rand":
-			return ACQ_Partition.RANDOM;
-		case "scope":
-			return ACQ_Partition.SCOPEBASED;
-		case "neigh":
-			return ACQ_Partition.NEIGHBORHOOD;
-		case "neg":
-			return ACQ_Partition.NEGATIONBASED;
-		case "rel":
-			return ACQ_Partition.RELATIONBASED;
-		case "relneg":
-			return ACQ_Partition.RELATION_NEGATIONBASED;
-		case "rule":
-			return ACQ_Partition.RULESBASED;
-		default: {
-
-			System.err.println("Bad partition parameter: " + name);
-			System.exit(2);
-		}
-
-		}
-		return null;
-	}
-
-	public static ACQ_Algorithm getMode(String name) {
-
-		return ACQ_Algorithm.valueOf(name.toUpperCase());
-
-	}
-
-	public static ACQ_Heuristic getHeuristic(String name) {
-
-		switch (name) {
-		case "sol":
-			return ACQ_Heuristic.SOL;
-		case "max":
-			return ACQ_Heuristic.MAX;
-		case "min":
-			return ACQ_Heuristic.MIN;
-		default: {
-			System.err.println("Bad heuristic parameter: " + name);
-			System.exit(2);
-		}
-
-		}
-		return null;
 	}
 
 	private static void printHeader() {

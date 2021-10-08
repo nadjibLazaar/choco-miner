@@ -1,4 +1,4 @@
-package constraints.closedpattern;
+package core.constraints.closedpattern;
 
 /*******************************************************************
  * This file is part of CPMiner project.

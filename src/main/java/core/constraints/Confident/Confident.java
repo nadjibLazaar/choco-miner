@@ -1,4 +1,4 @@
-package constraints.Confident;
+package core.constraints.Confident;
 
 
 import org.chocosolver.solver.Model;

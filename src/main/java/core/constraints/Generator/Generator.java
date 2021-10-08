@@ -1,4 +1,4 @@
-package constraints.Generator;
+package core.constraints.Generator;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.constraints.Constraint;

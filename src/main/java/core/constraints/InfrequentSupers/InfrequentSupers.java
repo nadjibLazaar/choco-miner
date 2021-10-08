@@ -1,4 +1,4 @@
-package constraints.InfrequentSupers;
+package core.constraints.InfrequentSupers;
 
 
 import org.chocosolver.solver.Model;
