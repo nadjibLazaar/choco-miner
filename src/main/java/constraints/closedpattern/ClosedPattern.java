@@ -116,7 +116,7 @@ public class ClosedPattern {
 
 		if(args.length==0){
 			instance = "./DataSets/" + "chess";
-			min_supp = 47; 
+			min_supp = 90; 
 			printPatterns = false;
 			weak_consistency = true;
 		}
