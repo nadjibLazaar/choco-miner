@@ -18,11 +18,13 @@ import expe.Experience.ExpeBuilder;
 
 public class ChocoMinerApp {
 
+	private static String task;
 	private static String rep;
 	private static String dataset;
 	private static String query;
 	private static long timeout;
 	private static int minsize, maxsize;
+	private static double minsup, minconf;
 	private static ArrayList<Integer> forbiddenI = new ArrayList<Integer>();
 	private static ArrayList<Integer> mandatoryI = new ArrayList<Integer>();
 	private static ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
@@ -77,6 +79,10 @@ public class ChocoMinerApp {
 
 		final Option helpFileOption = Option.builder("h").longOpt("help").desc("Display help message").build();
 
+		final Option taskOption = Option.builder("k").longOpt("task")
+				.desc("Predefined task: Itemset Mining / Association Rules Mining").hasArg(true)
+				.argName("pattern mining task").required(false).build();
+
 		final Option repOption = Option.builder("r").longOpt("rep")
 				.desc("Predefined representation: FIs / FCIs / FMIs / RIs / RGIs / RMIs").hasArg(true)
 				.argName("pattern representation").required(false).build();
@@ -90,6 +96,12 @@ public class ChocoMinerApp {
 
 		final Option limitOption = Option.builder("t").longOpt("timeout").hasArg(true).argName("timeout in ms")
 				.desc("Set the timeout limit to the specified value").required(false).build();
+
+		final Option minsupOption = Option.builder("s").longOpt("minsup").hasArg(false)
+				.desc("minimum support (relative frequency(%)").required(false).build();
+
+		final Option minconfOption = Option.builder("c").longOpt("minconf").hasArg(false)
+				.desc("minimum confidence (relative confidence(%)").required(false).build();
 
 		final Option minsizeOption = Option.builder("smin").longOpt("minsize").hasArg(false)
 				.desc("Patterns minimum size constraint").required(false).build();
@@ -117,11 +129,14 @@ public class ChocoMinerApp {
 
 		// Create the options list
 		final Options options = new Options();
+		options.addOption(taskOption);
 		options.addOption(repOption);
 		options.addOption(datasetOption);
 		options.addOption(queryfileOption);
 		options.addOption(guiOption);
 		options.addOption(limitOption);
+		options.addOption(minsupOption);
+		options.addOption(minconfOption);
 		options.addOption(minsizeOption);
 		options.addOption(forbiddenOption);
 		options.addOption(helpFileOption);
@@ -139,6 +154,9 @@ public class ChocoMinerApp {
 
 		switch (option) {
 
+		case "task":
+			task = line.getOptionValue(option);
+			break;
 		case "rep":
 			rep = line.getOptionValue(option);
 			break;
@@ -150,6 +168,12 @@ public class ChocoMinerApp {
 			break;
 		case "timeout":
 			timeout = Long.parseLong(line.getOptionValue(option));
+			break;
+		case "minsup":
+			minsup = Double.parseDouble(line.getOptionValue(option));
+			break;
+		case "minconf":
+			minconf = Double.parseDouble(line.getOptionValue(option));
 			break;
 		case "minsize":
 			minsize = Integer.parseInt(line.getOptionValue(option));

@@ -21,6 +21,7 @@ import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.exception.ContradictionException;
 import org.chocosolver.solver.variables.BoolVar;
 
+import core.tools.FileManager;
 import dataset.parsers.Dataset;
 import util.Log;
 
@@ -47,7 +48,7 @@ public class ClosedPattern {
 		// 1.Create the instance
 		String instance="";
 		double min_supp=0;		//relative minsupp(%)
-		boolean printPatterns=false;
+		boolean printPatterns=true;
 		boolean weak_consistency=false;
 
 		String help="Syntaxe : java [-options] -jar closedpattern.jar [args...]\n"+
@@ -115,9 +116,9 @@ public class ClosedPattern {
 		}
 
 		if(args.length==0){
-			instance = "./DataSets/" + "chess";
+			instance = "./DataSets/" + "connect";
 			min_supp = 90; 
-			printPatterns = false;
+			printPatterns = true;
 			weak_consistency = true;
 		}
 
@@ -188,11 +189,12 @@ public class ClosedPattern {
 	}
 
 	private static void printPatterns(BoolVar[] vars, int j) {
-		System.out.println("Solution " + j);
+	//	System.out.println("Solution " + j);
+	String sol= "";
 		for (int i = 0; i < vars.length; i++)
 			if (vars[i].isInstantiatedTo(1))
-				System.out.print(i + " ");
-		System.out.println();
+				sol+=(i + " ");
+		FileManager.printFile(sol, "FCs");
 
 	}
 	private static  float frequency(BoolVar[] vars, Dataset dataset) {
