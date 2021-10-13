@@ -221,4 +221,6 @@ public class Experience {
 	public int getNbpatterns() {
 		return nbpatterns;
 	}
+
+	
 }

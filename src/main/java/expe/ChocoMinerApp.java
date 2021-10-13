@@ -103,31 +103,31 @@ public class ChocoMinerApp {
 		final Option limitOption = Option.builder("t").longOpt("timeout").hasArg(true).argName("timeout in ms")
 				.desc("Set the timeout limit to the specified value").required(false).build();
 
-		final Option solOption = Option.builder("p").longOpt("nbpatterns").hasArg(false)
+		final Option solOption = Option.builder("p").longOpt("nbpatterns").hasArg(true)
 				.desc("nb patterns to return (all by default)").required(false).build();
 
-		final Option minsupOption = Option.builder("s").longOpt("minsup").hasArg(false)
+		final Option minsupOption = Option.builder("s").longOpt("minsup").hasArg(true)
 				.desc("minimum support (relative frequency(%)").required(false).build();
 
-		final Option minconfOption = Option.builder("c").longOpt("minconf").hasArg(false)
+		final Option minconfOption = Option.builder("c").longOpt("minconf").hasArg(true)
 				.desc("minimum confidence (relative confidence(%)").required(false).build();
 
-		final Option minsizeOption = Option.builder("sn").longOpt("minsize").hasArg(false)
+		final Option minsizeOption = Option.builder("sn").longOpt("minsize").hasArg(true)
 				.desc("Patterns minimum size constraint").required(false).build();
 
 		final Option maxsizeOption = Option.builder("sx").longOpt("maxsize").hasArg(false)
 				.desc("Patterns maximum size constraint").required(false).build();
 
-		final Option forbiddenOption = Option.builder("fi").longOpt("forbiddenitem").hasArg(false)
+		final Option forbiddenOption = Option.builder("fi").longOpt("forbiddenitem").hasArg(true)
 				.desc("Forbidden item (body part in case of ARs) (can be used several times)").required(false).build();
 
-		final Option mandatoryOption = Option.builder("mi").longOpt("mandatoryitem").hasArg(false)
+		final Option mandatoryOption = Option.builder("mi").longOpt("mandatoryitem").hasArg(true)
 				.desc("Mandatory item (body part in case of ARs) (can be used several times)").required(false).build();
 
-		final Option forbiddenhOption = Option.builder("fih").longOpt("forbiddenitemh").hasArg(false)
+		final Option forbiddenhOption = Option.builder("fih").longOpt("forbiddenitemh").hasArg(true)
 				.desc("Forbidden item in AR head (can be used several times)").required(false).build();
 
-		final Option mandatoryhOption = Option.builder("mih").longOpt("mandatoryitemh").hasArg(false)
+		final Option mandatoryhOption = Option.builder("mih").longOpt("mandatoryitemh").hasArg(true)
 				.desc("Mandatory item in AR head (can be used several times)").required(false).build();
 
 		final Option cdcOption = Option.builder("dc").longOpt("dc").hasArg(false)

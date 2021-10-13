@@ -6,12 +6,18 @@ import static org.chocosolver.util.tools.ArrayUtils.append;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.solver.constraints.Constraint;
+import org.chocosolver.solver.variables.BoolVar;
+
+import dataset.parsers.Dataset;
 
 import core.constraints.closedpattern.ClosedPatternDC;
+import core.constraints.closedpattern.ClosedPatternWC;
 import core.constraints.frequentpattern.FrequentPattern;
 import core.enumtype.CM_Representation;
 import core.enumtype.CM_Task;
@@ -23,6 +29,7 @@ import util.Log;
 public class ChocoMiner {
 	private Experience experience;
 	private Model model;
+	private ArrayList<Constraint> constraints = new ArrayList<>();
 	private Dataset dataset;
 	private BoolVar[] X;
 
@@ -32,6 +39,10 @@ public class ChocoMiner {
 		dataset.build_H();
 		buildModel();
 
+	}
+
+	private void reviserModel() {
+		// TODO
 	}
 
 	private void buildModel() {
@@ -53,11 +64,19 @@ public class ChocoMiner {
 		switch (experience.getRep()) {
 		case FIs: {
 			FrequentPattern c1 = new FrequentPattern(X, experience.getMinsup(), dataset);
+			constraints.add(c1);
 			model.post(c1);
 			break;
 		}
 		case FCIs: {
-			ClosedPatternDC c1 = new ClosedPatternDC(X, experience.getMinsup(), dataset);
+			Constraint c1;
+			if (experience.isDC())
+
+				c1 = new ClosedPatternDC(X, experience.getMinsup(), dataset);
+
+			else
+				c1 = new ClosedPatternWC(X, experience.getMinsup(), dataset);
+			constraints.add(c1);
 			model.post(c1);
 			break;
 		}
@@ -68,11 +87,21 @@ public class ChocoMiner {
 
 		}
 
-		if (experience.getMinsize() != -1)
-			model.sum(X, ">", experience.getMinsize() - 1).post();
+		if (experience.getMinsize() != -1) {
+			{
+				Constraint c1 = model.sum(X, ">", experience.getMinsize() - 1);
+				constraints.add(c1);
+				c1.post();
 
-		if (experience.getMaxsize() != -1)
-			model.sum(X, "<", experience.getMinsize() + 1).post();
+			}
+		}
+
+		if (experience.getMaxsize() != -1) {
+			Constraint c1 = model.sum(X, "<", experience.getMinsize() + 1);
+			constraints.add(c1);
+			c1.post();
+
+		}
 	}
 
 	private void buildArModel() {
