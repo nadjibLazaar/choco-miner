@@ -16,16 +16,13 @@ public class Experience {
 	private String dataset;
 	private String query;
 	private long timeout;
-	private int minsize;
-	private int maxsize;
-	private double minsup;
-	private double minconf;
+	private int minsize, maxsize, nbpatterns;
+	private double minsup, minconf;
 	private ArrayList<Integer> forbiddenI = new ArrayList<Integer>();
 	private ArrayList<Integer> mandatoryI = new ArrayList<Integer>();
 	private ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
 	private ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
-	private boolean verbose;
-	private boolean gui;
+	private boolean verbose, dc, gui;
 
 	public Experience(ExpeBuilder expeBuilder) {
 		this.task = expeBuilder.task;
@@ -40,7 +37,10 @@ public class Experience {
 		this.forbiddenIH.addAll(expeBuilder.forbiddenIH);
 		this.mandatoryIH.addAll(expeBuilder.mandatoryIH);
 		this.verbose = expeBuilder.verbose;
+		this.dc = expeBuilder.dc;
 		this.gui = expeBuilder.gui;
+		this.nbpatterns = expeBuilder.nbpatterns;
+
 	}
 
 	public static class ExpeBuilder {
@@ -50,16 +50,13 @@ public class Experience {
 		private String dataset;
 		private String query;
 		private long timeout;
-		private int minsize;
-		private int maxsize;
-		private double minsup;
-		private double minconf;
-		private  ArrayList<Integer> forbiddenI = new ArrayList<Integer>();
-		private  ArrayList<Integer> mandatoryI = new ArrayList<Integer>();
-		private  ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
-		private  ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
-		private boolean verbose;
-		private boolean gui;
+		private int minsize, maxsize, nbpatterns;
+		private double minsup, minconf;
+		private ArrayList<Integer> forbiddenI = new ArrayList<Integer>();
+		private ArrayList<Integer> mandatoryI = new ArrayList<Integer>();
+		private ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
+		private ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
+		private boolean verbose, dc, gui;
 
 		public ExpeBuilder setTask(String task) {
 			this.task = task;
@@ -101,6 +98,11 @@ public class Experience {
 			return this;
 		}
 
+		public ExpeBuilder setNbpatterns(int nbpatterns) {
+			this.nbpatterns = nbpatterns;
+			return this;
+		}
+
 		public ExpeBuilder setMaxsize(int maxsize) {
 			this.maxsize = maxsize;
 			return this;
@@ -131,6 +133,11 @@ public class Experience {
 			return this;
 		}
 
+		public ExpeBuilder setDC(boolean dc) {
+			this.dc = dc;
+			return this;
+		}
+
 		public ExpeBuilder setGui(boolean gui) {
 			this.gui = gui;
 			return this;
@@ -144,7 +151,7 @@ public class Experience {
 
 	public void process() throws IOException {
 
-		ChocoMiner cminer = new ChocoMiner(this);
+		new ChocoMiner(this).solve();
 
 	}
 
@@ -175,28 +182,28 @@ public class Experience {
 	public double getMinsup() {
 		return minsup;
 	}
-	
+
 	public double getMinconf() {
 		return minconf;
 	}
-	
+
 	public int getMaxsize() {
 		return maxsize;
 	}
 
-	public  ArrayList<Integer> getForbiddenI() {
+	public ArrayList<Integer> getForbiddenI() {
 		return forbiddenI;
 	}
 
-	public  ArrayList<Integer> getMandatoryI() {
+	public ArrayList<Integer> getMandatoryI() {
 		return mandatoryI;
 	}
 
-	public  ArrayList<Integer> getForbiddenIH() {
+	public ArrayList<Integer> getForbiddenIH() {
 		return forbiddenIH;
 	}
 
-	public  ArrayList<Integer> getMandatoryIH() {
+	public ArrayList<Integer> getMandatoryIH() {
 		return mandatoryIH;
 	}
 
@@ -208,4 +215,10 @@ public class Experience {
 		return gui;
 	}
 
+	public boolean isDC() {
+		return dc;
+	}
+	public int getNbpatterns() {
+		return nbpatterns;
+	}
 }

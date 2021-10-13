@@ -14,6 +14,7 @@ import org.apache.commons.cli.ParseException;
 
 import core.enumtype.CM_Dataset;
 import core.enumtype.CM_Representation;
+import core.enumtype.CM_Task;
 import expe.Experience.ExpeBuilder;
 
 public class ChocoMinerApp {
@@ -23,14 +24,13 @@ public class ChocoMinerApp {
 	private static String dataset;
 	private static String query;
 	private static long timeout;
-	private static int minsize, maxsize;
+	private static int minsize, maxsize, nbpatterns;
 	private static double minsup, minconf;
 	private static ArrayList<Integer> forbiddenI = new ArrayList<Integer>();
 	private static ArrayList<Integer> mandatoryI = new ArrayList<Integer>();
 	private static ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
 	private static ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
-	private static boolean verbose;
-	private static boolean gui;
+	private static boolean verbose, dc, gui;
 
 	public static void main(String args[]) throws IOException, ParseException {
 
@@ -44,20 +44,25 @@ public class ChocoMinerApp {
 		boolean helpMode = line.hasOption("help") || args.length == 0;
 		if (helpMode) {
 			final HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp("puacq", options, true);
+			formatter.printHelp("chocominer", options, true);
 			System.exit(0);
 		}
 
 		// defaults options
 
+		task = CM_Task.ItemsetMining.toString();
 		rep = CM_Representation.FIs.toString();
 		dataset = CM_Dataset.MUSHROOM.toString().toLowerCase();
 		String query = "";
-		timeout = 900000;
+		timeout = 0;
+		minsup = 0.9;
+		minconf = 0.9;
 		minsize = -1;
 		maxsize = -1;
 		verbose = false;
 		gui = false;
+		dc = false;
+		nbpatterns = Integer.MAX_VALUE;
 
 		///////////////////////
 
@@ -66,9 +71,10 @@ public class ChocoMinerApp {
 			checkOption(line, opt.getLongOpt());
 		}
 		// Build Experience
-		Experience expe = new Experience.ExpeBuilder().setRep(rep).setDataset(dataset).setQuery(query).setTimeout(timeout)
-				.setMinsize(minsize).setMaxsize(maxsize).setForbiddenI(forbiddenI).setMandatoryI(mandatoryI)
-				.setForbiddenIH(forbiddenIH).setMandatoryIH(mandatoryIH).setVerbose(verbose).setGui(gui).build();
+		Experience expe = new Experience.ExpeBuilder().setTask(task).setRep(rep).setDataset(dataset).setQuery(query)
+				.setTimeout(timeout).setMinsize(minsize).setMaxsize(maxsize).setForbiddenI(forbiddenI)
+				.setMandatoryI(mandatoryI).setForbiddenIH(forbiddenIH).setMandatoryIH(mandatoryIH).setVerbose(verbose)
+				.setGui(gui).setDC(dc).setMinsup(minsup).setMinconf(minconf).setNbpatterns(nbpatterns).build();
 		// Launch Experience
 		expe.process();
 
@@ -97,16 +103,19 @@ public class ChocoMinerApp {
 		final Option limitOption = Option.builder("t").longOpt("timeout").hasArg(true).argName("timeout in ms")
 				.desc("Set the timeout limit to the specified value").required(false).build();
 
+		final Option solOption = Option.builder("p").longOpt("nbpatterns").hasArg(false)
+				.desc("nb patterns to return (all by default)").required(false).build();
+
 		final Option minsupOption = Option.builder("s").longOpt("minsup").hasArg(false)
 				.desc("minimum support (relative frequency(%)").required(false).build();
 
 		final Option minconfOption = Option.builder("c").longOpt("minconf").hasArg(false)
 				.desc("minimum confidence (relative confidence(%)").required(false).build();
 
-		final Option minsizeOption = Option.builder("smin").longOpt("minsize").hasArg(false)
+		final Option minsizeOption = Option.builder("sn").longOpt("minsize").hasArg(false)
 				.desc("Patterns minimum size constraint").required(false).build();
 
-		final Option maxsizeOption = Option.builder("smax").longOpt("maxsize").hasArg(false)
+		final Option maxsizeOption = Option.builder("sx").longOpt("maxsize").hasArg(false)
 				.desc("Patterns maximum size constraint").required(false).build();
 
 		final Option forbiddenOption = Option.builder("fi").longOpt("forbiddenitem").hasArg(false)
@@ -120,6 +129,10 @@ public class ChocoMinerApp {
 
 		final Option mandatoryhOption = Option.builder("mih").longOpt("mandatoryitemh").hasArg(false)
 				.desc("Mandatory item in AR head (can be used several times)").required(false).build();
+
+		final Option cdcOption = Option.builder("dc").longOpt("dc").hasArg(false)
+				.desc("Specify this option to launch DC propagator for ClosedPattern global constraint").required(false)
+				.build();
 
 		final Option guiOption = Option.builder("g").longOpt("gui").hasArg(false)
 				.desc("Specify this option to launch graphical user interface").required(false).build();
@@ -145,6 +158,8 @@ public class ChocoMinerApp {
 		options.addOption(maxsizeOption);
 		options.addOption(mandatoryhOption);
 		options.addOption(verboseOption);
+		options.addOption(cdcOption);
+		options.addOption(solOption);
 
 		return options;
 	}
@@ -169,6 +184,9 @@ public class ChocoMinerApp {
 		case "timeout":
 			timeout = Long.parseLong(line.getOptionValue(option));
 			break;
+		case "nbpatterns":
+			nbpatterns = Integer.parseInt(line.getOptionValue(option));
+			break;
 		case "minsup":
 			minsup = Double.parseDouble(line.getOptionValue(option));
 			break;
@@ -176,6 +194,7 @@ public class ChocoMinerApp {
 			minconf = Double.parseDouble(line.getOptionValue(option));
 			break;
 		case "minsize":
+			System.out.println(line.getOptionValue(option));
 			minsize = Integer.parseInt(line.getOptionValue(option));
 			break;
 		case "maxsize":
@@ -192,6 +211,9 @@ public class ChocoMinerApp {
 			break;
 		case "mandatoryitemh":
 			mandatoryIH.add(Integer.parseInt(line.getOptionValue(option)));
+			break;
+		case "dc":
+			dc = true;
 			break;
 		case "gui":
 			gui = true;
@@ -213,7 +235,7 @@ public class ChocoMinerApp {
 
 		String header = "--------------------------------------------------------------------------\n";
 		header += "|                                                                         |\n";
-		header += "|                 CHOCO MINER PLATEFORM                                   |\n";
+		header += "|                      CHOCO MINER PLATEFORM                              |\n";
 		header += "|                                                                         |\n";
 		header += "--------------------------------------------------------------------------\n";
 		System.out.println(header);
