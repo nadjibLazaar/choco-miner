@@ -1,0 +1,40 @@
+oct. 13, 2021 10:56:26 AM core.ChocoMiner solve
+INFOS: Experience  = expe.Experience@5a01ccaa
+| Number of solutions = 512
+| Time for the First solution = ,09 s 
+| Time = ,37 s 
+| Nodes = 1023
+| Memory = 10,43 MB
+| Propagations = 0
+| Backtracks = 1023
+| Fails = 0
+oct. 13, 2021 10:56:54 AM core.ChocoMiner solve
+INFOS: Experience  = expe.Experience@5a01ccaa
+| Number of solutions = 11
+| Time for the First solution = ,04 s 
+| Time = ,13 s 
+| Nodes = 21
+| Memory = 9,77 MB
+| Propagations = 31
+| Backtracks = 21
+| Fails = 0
+oct. 13, 2021 10:59:38 AM core.ChocoMiner solve
+INFOS: Experience  = expe.Experience@edf4efb
+| Number of solutions = 11
+| Time for the First solution = ,04 s 
+| Time = ,09 s 
+| Nodes = 21
+| Memory = 24,85 MB
+| Propagations = 31
+| Backtracks = 21
+| Fails = 0
+oct. 13, 2021 10:59:55 AM core.ChocoMiner solve
+INFOS: Experience  = expe.Experience@5a01ccaa
+| Number of solutions = 11
+| Time for the First solution = ,04 s 
+| Time = ,11 s 
+| Nodes = 21
+| Memory = 9,77 MB
+| Propagations = 31
+| Backtracks = 21
+| Fails = 0
