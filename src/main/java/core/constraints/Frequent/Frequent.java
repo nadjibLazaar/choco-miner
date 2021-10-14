@@ -1,4 +1,4 @@
-package core.constraints.frequentpattern;
+package core.constraints.Frequent;
 
 /*******************************************************************
  * This file is part of CPMiner project.
@@ -18,7 +18,7 @@ import dataset.parsers.Dataset;
  * frequency constraint
  * 
  *******************************************/
-public class FrequentPattern extends Constraint {
+public class Frequent extends Constraint {
 
 	/*******************************************
 	 * 
@@ -27,8 +27,8 @@ public class FrequentPattern extends Constraint {
 	 * @param d  Datset
 	 * 
 	 *******************************************/
-	public FrequentPattern(BoolVar[] X, double teta, Dataset d) {
-		super("FrequentPattern", new PropFrequentPatternBacktrackable(X, teta, d));
+	public Frequent(BoolVar[] X, double teta, Dataset d) {
+		super("FrequentPattern", new PropFrequentBacktrackable(X, teta, d));
 	}
 
 }

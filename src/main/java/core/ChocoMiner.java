@@ -15,12 +15,13 @@ import org.chocosolver.solver.constraints.Constraint;
 
 import dataset.parsers.Dataset;
 import core.constraints.*;
+import core.constraints.Frequent.Frequent;
 import core.constraints.InfrequentSupers.InfrequentSupers;
 import core.constraints.FrequentSubs.FrequentSubs;
 import core.constraints.Generator.Generator;
+import core.constraints.Infrequent.Infrequent;
 import core.constraints.closedpattern.ClosedPatternDC;
 import core.constraints.closedpattern.ClosedPatternWC;
-import core.constraints.frequentpattern.FrequentPattern;
 import core.enumtype.CM_Representation;
 import core.enumtype.CM_Task;
 import core.tools.FileManager;
@@ -64,7 +65,7 @@ public class ChocoMiner {
 
 		switch (experience.getRep()) {
 		case FIs: {
-			FrequentPattern c1 = new FrequentPattern(X, experience.getMinsup(), dataset);
+			Frequent c1 = new Frequent(X, experience.getMinsup(), dataset);
 			query.add(c1);
 			break;
 		}
@@ -81,13 +82,13 @@ public class ChocoMiner {
 		}
 		case FMIs: {
 			InfrequentSupers c1 = new InfrequentSupers(X, experience.getMinsup(), dataset);
-			FrequentPattern c2 = new FrequentPattern(X, experience.getMinsup(), dataset);
+			Frequent c2 = new Frequent(X, experience.getMinsup(), dataset);
 			query.add(c1, c2);
 			break;
 		}
 		case RIs: {
-			//InfrequentPattern c1 = new InfrequentPattern(X, experience.getMinsup(), dataset);
-			//query.add(c1);
+			Infrequent c1 = new Infrequent(X, experience.getMinsup(), dataset);
+			query.add(c1);
 			break;
 		}
 		case RGIs: {
@@ -97,8 +98,8 @@ public class ChocoMiner {
 		}
 		case RMIs: {
 			FrequentSubs c1 = new FrequentSubs(X, experience.getMinsup(), dataset);
-		//	InfrequentPattern c2 = new InfrequentPattern(X, experience.getMinsup(), dataset);
-		//	query.add(c1, c2);
+			Infrequent c2 = new Infrequent(X, experience.getMinsup(), dataset);
+			query.add(c1, c2);
 			break;
 		}
 		default: {

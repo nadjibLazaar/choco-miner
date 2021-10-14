@@ -1,4 +1,4 @@
-package core.constraints.frequentpattern;
+package core.constraints.Frequent;
 
 /*******************************************************************
  * This file is part of CPMiner project.
@@ -25,7 +25,7 @@ import java.util.HashMap;
  * 
  *************************************************/
 
-public class PropFrequentPatternBacktrackable extends Propagator<BoolVar> {
+public class PropFrequentBacktrackable extends Propagator<BoolVar> {
 	BoolVar[] vars;
 	double relative_teta;
 	double effective_teta;
@@ -38,7 +38,7 @@ public class PropFrequentPatternBacktrackable extends Propagator<BoolVar> {
 	HashMap<Integer, BitSet> History = new HashMap<>();
 	HashMap<Integer, ArrayList<Integer>> ZerosHistory = new HashMap<>();
 
-	public PropFrequentPatternBacktrackable(BoolVar[] vars, double relative_teta, Dataset d) {
+	public PropFrequentBacktrackable(BoolVar[] vars, double relative_teta, Dataset d) {
 		super(vars, PropagatorPriority.LINEAR, false);
 		// super(vars);
 		this.vars = vars;
