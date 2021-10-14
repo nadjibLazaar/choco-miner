@@ -137,6 +137,7 @@ public class ChocoMiner {
 
 	public void solve() throws SecurityException, IOException {
 
+		post(query);
 		// 8. Solve and print
 		int nb_solutions = 2;
 		DecimalFormat df2 = new DecimalFormat(".##");
@@ -166,6 +167,13 @@ public class ChocoMiner {
 						((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024.0 * 1024.0)))
 				+ " MB" + "\n| Propagations = " + dataset.propagationCount + "\n| Backtracks = "
 				+ model.getSolver().getBackTrackCount() + "\n| Fails = " + model.getSolver().getFailCount());
+
+	}
+
+	private void post(Query query) {
+
+		for (Constraint c : query.getConstraints())
+			model.post(c);
 
 	}
 

@@ -1,8 +1,14 @@
 package expe;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 import org.apache.commons.cli.Option.Builder;
 
 import core.ChocoMiner;
@@ -153,6 +159,28 @@ public class Experience {
 
 		new ChocoMiner(this).solve();
 
+		// -------------- Interactive part
+		Options options = configParameters();
+		CommandLineParser parser = new DefaultParser();
+		Console console = System.console();
+		while (console != null) {
+			System.out.print("Enter your username: ");
+			String[] revision = console.readLine().split(" ");
+
+			CommandLine line = parser.parse(options, args);
+
+			// print header
+			printHeader();
+
+			boolean helpMode = line.hasOption("help") || args.length == 0;
+			if (helpMode) {
+				final HelpFormatter formatter = new HelpFormatter();
+				formatter.printHelp("chocominer", options, true);
+				System.exit(0);
+			}
+
+		}
+
 	}
 
 	public CM_Task getTask() {
@@ -218,9 +246,9 @@ public class Experience {
 	public boolean isDC() {
 		return dc;
 	}
+
 	public int getNbpatterns() {
 		return nbpatterns;
 	}
 
-	
 }
