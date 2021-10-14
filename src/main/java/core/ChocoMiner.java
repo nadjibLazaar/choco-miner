@@ -12,17 +12,18 @@ import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.constraints.Constraint;
-import org.chocosolver.solver.variables.BoolVar;
 
 import dataset.parsers.Dataset;
-
+import core.constraints.*;
+import core.constraints.InfrequentSupers.InfrequentSupers;
+import core.constraints.FrequentSubs.FrequentSubs;
+import core.constraints.Generator.Generator;
 import core.constraints.closedpattern.ClosedPatternDC;
 import core.constraints.closedpattern.ClosedPatternWC;
 import core.constraints.frequentpattern.FrequentPattern;
 import core.enumtype.CM_Representation;
 import core.enumtype.CM_Task;
 import core.tools.FileManager;
-import dataset.parsers.Dataset;
 import expe.Experience;
 import util.Log;
 
@@ -32,12 +33,14 @@ public class ChocoMiner {
 	private ArrayList<Constraint> constraints = new ArrayList<>();
 	private Dataset dataset;
 	private BoolVar[] X;
+	private Query query;
 
 	public ChocoMiner(Experience experience) throws IOException {
 		this.experience = experience;
 		dataset = new Dataset(FileManager.getDatasetDir() + experience.getDataset() + FileManager.getExtData());
 		dataset.build_H();
-		buildModel();
+		model = new Model(experience.getTask().toString());
+		buildQuery();
 
 	}
 
@@ -45,18 +48,16 @@ public class ChocoMiner {
 		// TODO
 	}
 
-	private void buildModel() {
-
-		model = new Model(experience.getTask().toString());
+	private void buildQuery() {
 
 		if (experience.getTask() == CM_Task.ItemsetMining)
-			buildItemsetModel();
+			buildItemsetQuery();
 		else
-			buildArModel();
+			buildARQuery();
 
 	}
 
-	private void buildItemsetModel() {
+	private void buildItemsetQuery() {
 
 		// Declare variables
 		X = model.boolVarArray(dataset.getNbItems()); // items
@@ -64,8 +65,7 @@ public class ChocoMiner {
 		switch (experience.getRep()) {
 		case FIs: {
 			FrequentPattern c1 = new FrequentPattern(X, experience.getMinsup(), dataset);
-			constraints.add(c1);
-			model.post(c1);
+			query.add(c1);
 			break;
 		}
 		case FCIs: {
@@ -76,8 +76,29 @@ public class ChocoMiner {
 
 			else
 				c1 = new ClosedPatternWC(X, experience.getMinsup(), dataset);
-			constraints.add(c1);
-			model.post(c1);
+			query.add(c1);
+			break;
+		}
+		case FMIs: {
+			InfrequentSupers c1 = new InfrequentSupers(X, experience.getMinsup(), dataset);
+			FrequentPattern c2 = new FrequentPattern(X, experience.getMinsup(), dataset);
+			query.add(c1, c2);
+			break;
+		}
+		case RIs: {
+			//InfrequentPattern c1 = new InfrequentPattern(X, experience.getMinsup(), dataset);
+			//query.add(c1);
+			break;
+		}
+		case RGIs: {
+			Generator c1 = new Generator(X, experience.getMinsup(), dataset);
+			query.add(c1);
+			break;
+		}
+		case RMIs: {
+			FrequentSubs c1 = new FrequentSubs(X, experience.getMinsup(), dataset);
+		//	InfrequentPattern c2 = new InfrequentPattern(X, experience.getMinsup(), dataset);
+		//	query.add(c1, c2);
 			break;
 		}
 		default: {
@@ -104,7 +125,7 @@ public class ChocoMiner {
 		}
 	}
 
-	private void buildArModel() {
+	private void buildARQuery() {
 		// TODO Auto-generated method stub
 
 	}
