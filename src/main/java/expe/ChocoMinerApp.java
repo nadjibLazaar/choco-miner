@@ -115,7 +115,7 @@ public class ChocoMinerApp {
 		final Option minsizeOption = Option.builder("sn").longOpt("minsize").hasArg(true)
 				.desc("Patterns minimum size constraint").required(false).build();
 
-		final Option maxsizeOption = Option.builder("sx").longOpt("maxsize").hasArg(false)
+		final Option maxsizeOption = Option.builder("sx").longOpt("maxsize").hasArg(true)
 				.desc("Patterns maximum size constraint").required(false).build();
 
 		final Option forbiddenOption = Option.builder("fi").longOpt("forbiddenitem").hasArg(true)
