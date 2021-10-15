@@ -47,7 +47,7 @@ public class ClosedPattern {
 		
 		// 1.Create the instance
 		String instance="";
-		double min_supp=0;		//relative minsupp(%)
+		double min_supp=90;		//relative minsupp(%)
 		boolean printPatterns=true;
 		boolean weak_consistency=false;
 
@@ -116,7 +116,7 @@ public class ClosedPattern {
 		}
 
 		if(args.length==0){
-			instance = "./DataSets/" + "connect";
+			instance = "./datasets/" + "lazaar.data";
 			min_supp = 90; 
 			printPatterns = true;
 			weak_consistency = true;

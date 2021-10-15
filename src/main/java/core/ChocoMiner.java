@@ -180,7 +180,7 @@ public class ChocoMiner {
 
 	private void printPatterns(BoolVar[] vars, int j) {
 		// System.out.println("Solution " + j);
-		String sol = "";
+		String sol = "s"+j+"::\t";
 		for (int i = 0; i < vars.length; i++)
 			if (vars[i].isInstantiatedTo(1))
 				sol += (i + " ");

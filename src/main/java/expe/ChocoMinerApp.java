@@ -55,8 +55,8 @@ public class ChocoMinerApp {
 		dataset = CM_Dataset.MUSHROOM.toString().toLowerCase();
 		String query = "";
 		timeout = 0;
-		minsup = 0.9;
-		minconf = 0.9;
+		minsup = 10;
+		minconf = 90;
 		minsize = -1;
 		maxsize = -1;
 		verbose = false;

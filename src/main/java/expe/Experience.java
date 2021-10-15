@@ -46,6 +46,8 @@ public class Experience {
 		this.dc = expeBuilder.dc;
 		this.gui = expeBuilder.gui;
 		this.nbpatterns = expeBuilder.nbpatterns;
+		this.minsup = expeBuilder.minsup;
+		this.minconf = expeBuilder.minconf;
 
 	}
 
