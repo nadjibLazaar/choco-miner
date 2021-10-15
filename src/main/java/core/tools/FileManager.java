@@ -17,17 +17,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ACQ_Network;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ConstraintFactory;
-import fr.lirmm.coconut.acquisition.core.acqconstraint.ConstraintFactory.ConstraintSet;
-import fr.lirmm.coconut.acquisition.core.acqsolver.ACQ_ChocoSolver;
-import fr.lirmm.coconut.acquisition.core.acqsolver.ACQ_ConstraintSolver;
-import fr.lirmm.coconut.acquisition.core.acqsolver.ACQ_IDomain;
-import fr.lirmm.coconut.acquisition.core.learner.ACQ_Bias;
-import fr.lirmm.coconut.acquisition.core.learner.ACQ_Learner;
-import fr.lirmm.coconut.acquisition.core.learner.ACQ_Query;
-import fr.lirmm.coconut.acquisition.core.learner.ACQ_Scope;
-import fr.lirmm.coconut.acquisition.core.tools.StatManager;
+
 
 public class FileManager {
 

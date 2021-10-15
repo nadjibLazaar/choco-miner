@@ -45,12 +45,13 @@ public class ChocoMiner {
 
 	}
 
-	private void reviserModel() {
+	private void queryRevision() {
 		// TODO
 	}
 
 	private void buildQuery() {
 
+		query = new Query();
 		if (experience.getTask() == CM_Task.ItemsetMining)
 			buildItemsetQuery();
 		else

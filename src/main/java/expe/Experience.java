@@ -159,7 +159,7 @@ public class Experience {
 
 		new ChocoMiner(this).solve();
 
-		// -------------- Interactive part
+		/*/ -------------- Interactive part
 		Options options = configParameters();
 		CommandLineParser parser = new DefaultParser();
 		Console console = System.console();
@@ -179,7 +179,7 @@ public class Experience {
 				System.exit(0);
 			}
 
-		}
+		}*/
 
 	}
 
