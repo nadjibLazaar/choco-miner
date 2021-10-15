@@ -200,18 +200,30 @@ public class ChocoMinerApp {
 		case "maxsize":
 			maxsize = Integer.parseInt(line.getOptionValue(option));
 			break;
-		case "forbiddenitem":
-			forbiddenI.add(Integer.parseInt(line.getOptionValue(option)));
+		case "forbiddenitem": {
+			String[] items = line.getOptionValue(option).split(" ");
+			for (String s : items)
+				forbiddenI.add(Integer.parseInt(s));
 			break;
-		case "mandatoryitem":
-			mandatoryI.add(Integer.parseInt(line.getOptionValue(option)));
+		}
+		case "mandatoryitem": {
+			String[] items = line.getOptionValue(option).split(" ");
+			for (String s : items)
+				mandatoryI.add(Integer.parseInt(s));
 			break;
-		case "forbiddenitemh":
-			forbiddenIH.add(Integer.parseInt(line.getOptionValue(option)));
+		}
+		case "forbiddenitemh": {
+			String[] items = line.getOptionValue(option).split(" ");
+			for (String s : items)
+				forbiddenIH.add(Integer.parseInt(s));
 			break;
-		case "mandatoryitemh":
-			mandatoryIH.add(Integer.parseInt(line.getOptionValue(option)));
+		}
+		case "mandatoryitemh": {
+			String[] items = line.getOptionValue(option).split(" ");
+			for (String s : items)
+				mandatoryIH.add(Integer.parseInt(s));
 			break;
+		}
 		case "dc":
 			dc = true;
 			break;

@@ -114,7 +114,7 @@ public class ChocoMiner {
 			{
 				Constraint c1 = model.sum(X, ">", experience.getMinsize() - 1);
 				constraints.add(c1);
-				c1.post();
+				query.add(c1);
 
 			}
 		}
@@ -122,7 +122,22 @@ public class ChocoMiner {
 		if (experience.getMaxsize() != -1) {
 			Constraint c1 = model.sum(X, "<", experience.getMinsize() + 1);
 			constraints.add(c1);
-			c1.post();
+			query.add(c1);
+
+		}
+
+		if (!experience.getForbiddenI().isEmpty()) {
+			for (int i : experience.getForbiddenI()) {
+				Constraint c1 = model.arithm(X[i], "=", 0);
+				query.add(c1);
+			}
+			}
+			
+			if (!experience.getMandatoryI().isEmpty()) {
+				for (int i : experience.getForbiddenI()) {
+					Constraint c1 = model.arithm(X[i], "=", 1);
+					query.add(c1);
+				}
 
 		}
 	}
@@ -180,7 +195,7 @@ public class ChocoMiner {
 
 	private void printPatterns(BoolVar[] vars, int j) {
 		// System.out.println("Solution " + j);
-		String sol = "s"+j+"::\t";
+		String sol = "s" + j + "::\t";
 		for (int i = 0; i < vars.length; i++)
 			if (vars[i].isInstantiatedTo(1))
 				sol += (i + " ");
