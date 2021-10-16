@@ -27,4 +27,9 @@ public class Query {
 
 	}
 
+	@Override
+	public String toString() {
+		return "Query [constraints=" + constraints + "]";
+	}
+
 }

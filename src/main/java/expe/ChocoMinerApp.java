@@ -119,16 +119,16 @@ public class ChocoMinerApp {
 				.desc("Patterns maximum size constraint").required(false).build();
 
 		final Option forbiddenOption = Option.builder("fi").longOpt("forbiddenitem").hasArg(true)
-				.desc("Forbidden item (body part in case of ARs) (can be used several times)").required(false).build();
+				.desc("Forbidden items (body part in case of ARs) (items are separated using\":\")").required(false).build();
 
 		final Option mandatoryOption = Option.builder("mi").longOpt("mandatoryitem").hasArg(true)
-				.desc("Mandatory item (body part in case of ARs) (can be used several times)").required(false).build();
+				.desc("Mandatory item (body part in case of ARs) (items are separated using\":\")").required(false).build();
 
 		final Option forbiddenhOption = Option.builder("fih").longOpt("forbiddenitemh").hasArg(true)
-				.desc("Forbidden item in AR head (can be used several times)").required(false).build();
+				.desc("Forbidden item in AR head (items are separated using\":\")").required(false).build();
 
 		final Option mandatoryhOption = Option.builder("mih").longOpt("mandatoryitemh").hasArg(true)
-				.desc("Mandatory item in AR head (can be used several times)").required(false).build();
+				.desc("Mandatory item in AR head (items are separated using\":\")").required(false).build();
 
 		final Option cdcOption = Option.builder("dc").longOpt("dc").hasArg(false)
 				.desc("Specify this option to launch DC propagator for ClosedPattern global constraint").required(false)
@@ -201,13 +201,13 @@ public class ChocoMinerApp {
 			maxsize = Integer.parseInt(line.getOptionValue(option));
 			break;
 		case "forbiddenitem": {
-			String[] items = line.getOptionValue(option).split(" ");
+			String[] items = line.getOptionValue(option).split(":");
 			for (String s : items)
 				forbiddenI.add(Integer.parseInt(s));
 			break;
 		}
 		case "mandatoryitem": {
-			String[] items = line.getOptionValue(option).split(" ");
+			String[] items = line.getOptionValue(option).split(":");
 			for (String s : items)
 				mandatoryI.add(Integer.parseInt(s));
 			break;
