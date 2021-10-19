@@ -1,0 +1,11 @@
+oct. 15, 2021 5:06:58 PM core.constraints.closedpattern.ClosedPattern main
+INFOS: Instance  = ./datasets/lazaar.data
+| Min_supp = 90.0% 
+| Number of solutions = 1
+| Time for the First solution = ,02 s 
+| Time = ,06 s 
+| Nodes = 1
+| Memory = 9,17 MB
+| Propagations = 18
+| Backtracks = 1
+| Fails = 0
