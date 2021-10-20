@@ -24,8 +24,8 @@ public class Experience {
 	private long timeout;
 	private int minsize, maxsize, nbpatterns;
 	private double minsup, minconf;
-	private ArrayList<Integer> forbiddenI = new ArrayList<Integer>();
-	private ArrayList<Integer> mandatoryI = new ArrayList<Integer>();
+	private ArrayList<ArrayList<Integer>> forbiddenI = new ArrayList<ArrayList<Integer>>();
+	private ArrayList<ArrayList<Integer>> mandatoryI = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
 	private ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
 	private boolean verbose, dc, gui;
@@ -60,8 +60,8 @@ public class Experience {
 		private long timeout;
 		private int minsize, maxsize, nbpatterns;
 		private double minsup, minconf;
-		private ArrayList<Integer> forbiddenI = new ArrayList<Integer>();
-		private ArrayList<Integer> mandatoryI = new ArrayList<Integer>();
+		private ArrayList<ArrayList<Integer>> forbiddenI = new ArrayList<ArrayList<Integer>>();
+		private ArrayList<ArrayList<Integer>> mandatoryI = new ArrayList<ArrayList<Integer>>();
 		private ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
 		private ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
 		private boolean verbose, dc, gui;
@@ -116,12 +116,12 @@ public class Experience {
 			return this;
 		}
 
-		public ExpeBuilder setForbiddenI(ArrayList<Integer> forbiddenI) {
+		public ExpeBuilder setForbiddenI(ArrayList<ArrayList<Integer>> forbiddenI) {
 			this.forbiddenI.addAll(forbiddenI);
 			return this;
 		}
 
-		public ExpeBuilder setMandatoryI(ArrayList<Integer> mandatoryI) {
+		public ExpeBuilder setMandatoryI(ArrayList<ArrayList<Integer>> mandatoryI) {
 			this.mandatoryI.addAll(mandatoryI);
 			return this;
 		}
@@ -221,11 +221,11 @@ public class Experience {
 		return maxsize;
 	}
 
-	public ArrayList<Integer> getForbiddenI() {
+	public ArrayList<ArrayList<Integer>> getForbiddenI() {
 		return forbiddenI;
 	}
 
-	public ArrayList<Integer> getMandatoryI() {
+	public ArrayList<ArrayList<Integer>> getMandatoryI() {
 		return mandatoryI;
 	}
 

@@ -127,16 +127,18 @@ public class ChocoMiner {
 		}
 
 		if (!experience.getForbiddenI().isEmpty()) {
-			for (int i : experience.getForbiddenI()) {
+			for (ArrayList<Integer> a : experience.getForbiddenI()) {
+				for(int i : a) {
 				Constraint c1 = model.arithm(X[i], "=", 0);
-				query.add(c1);
+				query.add(c1);}
 			}
 			}
 			
 			if (!experience.getMandatoryI().isEmpty()) {
-				for (int i : experience.getForbiddenI()) {
+				for (ArrayList<Integer> a : experience.getMandatoryI()) {
+					for(int i : a) {
 					Constraint c1 = model.arithm(X[i], "=", 1);
-					query.add(c1);
+					query.add(c1);}
 				}
 
 		}

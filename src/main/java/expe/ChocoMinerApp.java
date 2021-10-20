@@ -26,8 +26,8 @@ public class ChocoMinerApp {
 	private static long timeout;
 	private static int minsize, maxsize, nbpatterns;
 	private static double minsup, minconf;
-	private static ArrayList<Integer> forbiddenI = new ArrayList<Integer>();
-	private static ArrayList<Integer> mandatoryI = new ArrayList<Integer>();
+	private static ArrayList<ArrayList<Integer>> forbiddenI = new ArrayList<ArrayList<Integer>>();
+	private static ArrayList<ArrayList<Integer>> mandatoryI = new ArrayList<ArrayList<Integer>>();
 	private static ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
 	private static ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
 	private static boolean verbose, dc, gui;
@@ -202,14 +202,46 @@ public class ChocoMinerApp {
 			break;
 		case "forbiddenitem": {
 			String[] items = line.getOptionValue(option).split(":");
-			for (String s : items)
-				forbiddenI.add(Integer.parseInt(s));
+			for (String s : items) {
+				ArrayList<Integer> values = new ArrayList<Integer>();
+				if(s.contains("-")) {
+					int start = Integer.parseInt(s.split("-")[0]);
+					int end = Integer.parseInt(s.split("-")[1]);
+
+					for(int i =start;i<=end;i++)
+							values.add(i);
+				}else if(s.contains(",")){
+				for (String v : s.split(",")) 
+					values.add(Integer.parseInt(v));
+				}else {
+					
+					values.add(Integer.parseInt(s));
+
+				}
+				forbiddenI.add(values);
+
+				}
 			break;
 		}
 		case "mandatoryitem": {
 			String[] items = line.getOptionValue(option).split(":");
-			for (String s : items)
-				mandatoryI.add(Integer.parseInt(s));
+			for (String s : items) {
+				ArrayList<Integer> values = new ArrayList<Integer>();
+				if(s.contains("-")) {
+					int start = Integer.parseInt(s.split("-")[0]);
+					int end = Integer.parseInt(s.split("-")[1]);
+
+					for(int i =start;i<=end;i++)
+							values.add(i);
+				}else if(s.contains(",")){
+					for (String v : s.split(",")) 
+						values.add(Integer.parseInt(v));
+					}else {
+						
+						values.add(Integer.parseInt(s));
+
+					}
+				mandatoryI.add(values);}
 			break;
 		}
 		case "forbiddenitemh": {
