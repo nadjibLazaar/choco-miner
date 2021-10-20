@@ -28,8 +28,8 @@ public class ChocoMinerApp {
 	private static double minsup, minconf;
 	private static ArrayList<ArrayList<Integer>> forbiddenI = new ArrayList<ArrayList<Integer>>();
 	private static ArrayList<ArrayList<Integer>> mandatoryI = new ArrayList<ArrayList<Integer>>();
-	private static ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
-	private static ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
+	private static ArrayList<ArrayList<Integer>> forbiddenIH = new ArrayList<ArrayList<Integer>>();
+	private static ArrayList<ArrayList<Integer>> mandatoryIH = new ArrayList<ArrayList<Integer>>();
 	private static boolean verbose, dc, gui;
 
 	public static void main(String args[]) throws IOException, ParseException {
@@ -119,16 +119,16 @@ public class ChocoMinerApp {
 				.desc("Patterns maximum size constraint").required(false).build();
 
 		final Option forbiddenOption = Option.builder("fi").longOpt("forbiddenitem").hasArg(true)
-				.desc("Forbidden items (body part in case of ARs) (items are separated using\":\")").required(false).build();
+				.desc("Forbidden items (body part in case of ARs) (itemsets are separated using\":\") example : (1-50:52:80,86,100)").required(false).build();
 
 		final Option mandatoryOption = Option.builder("mi").longOpt("mandatoryitem").hasArg(true)
-				.desc("Mandatory item (body part in case of ARs) (items are separated using\":\")").required(false).build();
+				.desc("Mandatory item (body part in case of ARs) (itemsets are separated using\":\")  example : (1-50:52:80,86,100)").required(false).build();
 
 		final Option forbiddenhOption = Option.builder("fih").longOpt("forbiddenitemh").hasArg(true)
-				.desc("Forbidden item in AR head (items are separated using\":\")").required(false).build();
+				.desc("Forbidden item in AR head (itemsets are separated using\":\") example : (1-50:52:80,86,100)\")").required(false).build();
 
 		final Option mandatoryhOption = Option.builder("mih").longOpt("mandatoryitemh").hasArg(true)
-				.desc("Mandatory item in AR head (items are separated using\":\")").required(false).build();
+				.desc("Mandatory item in AR head (itemsets are separated using\":\") example : (1-50:52:80,86,100)\")").required(false).build();
 
 		final Option cdcOption = Option.builder("dc").longOpt("dc").hasArg(false)
 				.desc("Specify this option to launch DC propagator for ClosedPattern global constraint").required(false)
@@ -245,15 +245,47 @@ public class ChocoMinerApp {
 			break;
 		}
 		case "forbiddenitemh": {
-			String[] items = line.getOptionValue(option).split(" ");
-			for (String s : items)
-				forbiddenIH.add(Integer.parseInt(s));
+			String[] items = line.getOptionValue(option).split(":");
+			for (String s : items) {
+				ArrayList<Integer> values = new ArrayList<Integer>();
+				if(s.contains("-")) {
+					int start = Integer.parseInt(s.split("-")[0]);
+					int end = Integer.parseInt(s.split("-")[1]);
+
+					for(int i =start;i<=end;i++)
+							values.add(i);
+				}else if(s.contains(",")){
+				for (String v : s.split(",")) 
+					values.add(Integer.parseInt(v));
+				}else {
+					
+					values.add(Integer.parseInt(s));
+
+				}
+				forbiddenIH.add(values);
+
+				}
 			break;
 		}
 		case "mandatoryitemh": {
-			String[] items = line.getOptionValue(option).split(" ");
-			for (String s : items)
-				mandatoryIH.add(Integer.parseInt(s));
+			String[] items = line.getOptionValue(option).split(":");
+			for (String s : items) {
+				ArrayList<Integer> values = new ArrayList<Integer>();
+				if(s.contains("-")) {
+					int start = Integer.parseInt(s.split("-")[0]);
+					int end = Integer.parseInt(s.split("-")[1]);
+
+					for(int i =start;i<=end;i++)
+							values.add(i);
+				}else if(s.contains(",")){
+					for (String v : s.split(",")) 
+						values.add(Integer.parseInt(v));
+					}else {
+						
+						values.add(Integer.parseInt(s));
+
+					}
+				mandatoryIH.add(values);}
 			break;
 		}
 		case "dc":

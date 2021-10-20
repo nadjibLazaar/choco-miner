@@ -26,8 +26,8 @@ public class Experience {
 	private double minsup, minconf;
 	private ArrayList<ArrayList<Integer>> forbiddenI = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Integer>> mandatoryI = new ArrayList<ArrayList<Integer>>();
-	private ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
-	private ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
+	private ArrayList<ArrayList<Integer>>  forbiddenIH = new ArrayList<ArrayList<Integer>> ();
+	private ArrayList<ArrayList<Integer>>  mandatoryIH = new ArrayList<ArrayList<Integer>> ();
 	private boolean verbose, dc, gui;
 
 	public Experience(ExpeBuilder expeBuilder) {
@@ -62,8 +62,8 @@ public class Experience {
 		private double minsup, minconf;
 		private ArrayList<ArrayList<Integer>> forbiddenI = new ArrayList<ArrayList<Integer>>();
 		private ArrayList<ArrayList<Integer>> mandatoryI = new ArrayList<ArrayList<Integer>>();
-		private ArrayList<Integer> forbiddenIH = new ArrayList<Integer>();
-		private ArrayList<Integer> mandatoryIH = new ArrayList<Integer>();
+		private ArrayList<ArrayList<Integer>>   forbiddenIH = new ArrayList<ArrayList<Integer>> ();
+		private ArrayList<ArrayList<Integer>>  mandatoryIH = new ArrayList<ArrayList<Integer>>();
 		private boolean verbose, dc, gui;
 
 		public ExpeBuilder setTask(String task) {
@@ -126,12 +126,12 @@ public class Experience {
 			return this;
 		}
 
-		public ExpeBuilder setForbiddenIH(ArrayList<Integer> forbiddenIH) {
+		public ExpeBuilder setForbiddenIH(ArrayList<ArrayList<Integer>>  forbiddenIH) {
 			this.forbiddenIH.addAll(forbiddenIH);
 			return this;
 		}
 
-		public ExpeBuilder setMandatoryIH(ArrayList<Integer> mandatoryIH) {
+		public ExpeBuilder setMandatoryIH(ArrayList<ArrayList<Integer>>  mandatoryIH) {
 			this.mandatoryIH.addAll(mandatoryIH);
 			return this;
 		}
@@ -229,11 +229,11 @@ public class Experience {
 		return mandatoryI;
 	}
 
-	public ArrayList<Integer> getForbiddenIH() {
+	public ArrayList<ArrayList<Integer>> getForbiddenIH() {
 		return forbiddenIH;
 	}
 
-	public ArrayList<Integer> getMandatoryIH() {
+	public ArrayList<ArrayList<Integer>>  getMandatoryIH() {
 		return mandatoryIH;
 	}
 
