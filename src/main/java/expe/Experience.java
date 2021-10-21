@@ -1,26 +1,17 @@
 package expe;
 
-import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.Option.Builder;
 
 import core.ChocoMiner;
+import core.enumtype.CM_Measure;
 import core.enumtype.CM_Representation;
 import core.enumtype.CM_Task;
 
 public class Experience {
 
-	private String task;
-	private String rep;
-	private String dataset;
-	private String query;
+	private String task, rep, dataset, query, measure;
 	private long timeout;
 	private int minsize, maxsize, nbpatterns;
 	private double minsup, minconf;
@@ -53,10 +44,7 @@ public class Experience {
 
 	public static class ExpeBuilder {
 
-		private String task;
-		private String rep;
-		private String dataset;
-		private String query;
+		private String task, rep, measure, dataset, query;
 		private long timeout;
 		private int minsize, maxsize, nbpatterns;
 		private double minsup, minconf;
@@ -73,6 +61,11 @@ public class Experience {
 
 		public ExpeBuilder setRep(String rep) {
 			this.rep = rep;
+			return this;
+		}
+
+		public ExpeBuilder setMeasure(String measure) {
+			this.measure = measure;
 			return this;
 		}
 
@@ -191,6 +184,10 @@ public class Experience {
 
 	public CM_Representation getRep() {
 		return CM_Representation.valueOf(rep);
+	}
+	
+	public CM_Measure getMeasure() {
+		return CM_Measure.valueOf(measure);
 	}
 
 	public String getDataset() {
