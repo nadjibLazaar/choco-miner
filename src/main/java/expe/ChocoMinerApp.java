@@ -16,16 +16,11 @@ import core.enumtype.CM_Dataset;
 import core.enumtype.CM_Measures;
 import core.enumtype.CM_Representation;
 import core.enumtype.CM_Task;
-import expe.Experience.ExpeBuilder;
 
 public class ChocoMinerApp {
 
-	private static String task;
-	private static String rep;
-	private static String measure;
 
-	private static String dataset;
-	private static String query;
+	private static String task, rep, dataset, query, measure;
 	private static long timeout;
 	private static int minsize, maxsize, nbpatterns;
 	private static double minsup, minconf,threshold;
@@ -76,8 +71,9 @@ public class ChocoMinerApp {
 			checkOption(line, opt.getLongOpt());
 		}
 		// Build Experience
-		Experience expe = new Experience.ExpeBuilder().setTask(task).setRep(rep).setMeasure(measure).setDataset(dataset).setQuery(query)
-				.setTimeout(timeout).setMinsize(minsize).setMaxsize(maxsize).setForbiddenI(forbiddenI)
+
+		Experience expe = new Experience.ExpeBuilder().setTask(task).setRep(rep).setMeasure(measure).setDataset(dataset)
+				.setQuery(query).setTimeout(timeout).setMinsize(minsize).setMaxsize(maxsize).setForbiddenI(forbiddenI)
 				.setMandatoryI(mandatoryI).setForbiddenIH(forbiddenIH).setMandatoryIH(mandatoryIH).setVerbose(verbose)
 				.setGui(gui).setDC(dc).setMinsup(minsup).setMinconf(minconf).setMeasureThresholdValue(threshold).setNbpatterns(nbpatterns).build();
 		// Launch Experience
@@ -101,6 +97,9 @@ public class ChocoMinerApp {
 		final Option measureOption = Option.builder("m").longOpt("measure")
 				.desc("Predefined measures : ...").hasArg(true)
 				.argName("pattern measure").required(false).build();
+
+		final Option meaOption = Option.builder("m").longOpt("measure").desc("Interestingness Measures: Freq / Rare")
+				.hasArg(true).argName("interestingness measures").required(false).build();
 
 		final Option datasetOption = Option.builder("d").longOpt("dataset").desc("dataset file").hasArg(true)
 				.argName("dataset").required(false).build();
@@ -129,17 +128,21 @@ public class ChocoMinerApp {
 		final Option maxsizeOption = Option.builder("sx").longOpt("maxsize").hasArg(true)
 				.desc("Patterns maximum size constraint").required(false).build();
 
-		final Option forbiddenOption = Option.builder("fi").longOpt("forbiddenitem").hasArg(true)
-				.desc("Forbidden items (body part in case of ARs) (itemsets are separated using\":\") example : (1-50:52:80,86,100)").required(false).build();
+		final Option forbiddenOption = Option.builder("fi").longOpt("forbiddenitem").hasArg(true).desc(
+				"Forbidden items (body part in case of ARs) (itemsets are separated using\":\") example : (1-50:52:80,86,100)")
+				.required(false).build();
 
-		final Option mandatoryOption = Option.builder("mi").longOpt("mandatoryitem").hasArg(true)
-				.desc("Mandatory item (body part in case of ARs) (itemsets are separated using\":\")  example : (1-50:52:80,86,100)").required(false).build();
+		final Option mandatoryOption = Option.builder("mi").longOpt("mandatoryitem").hasArg(true).desc(
+				"Mandatory item (body part in case of ARs) (itemsets are separated using\":\")  example : (1-50:52:80,86,100)")
+				.required(false).build();
 
 		final Option forbiddenhOption = Option.builder("fih").longOpt("forbiddenitemh").hasArg(true)
-				.desc("Forbidden item in AR head (itemsets are separated using\":\") example : (1-50:52:80,86,100)\")").required(false).build();
+				.desc("Forbidden item in AR head (itemsets are separated using\":\") example : (1-50:52:80,86,100)\")")
+				.required(false).build();
 
 		final Option mandatoryhOption = Option.builder("mih").longOpt("mandatoryitemh").hasArg(true)
-				.desc("Mandatory item in AR head (itemsets are separated using\":\") example : (1-50:52:80,86,100)\")").required(false).build();
+				.desc("Mandatory item in AR head (itemsets are separated using\":\") example : (1-50:52:80,86,100)\")")
+				.required(false).build();
 
 		final Option cdcOption = Option.builder("dc").longOpt("dc").hasArg(false)
 				.desc("Specify this option to launch DC propagator for ClosedPattern global constraint").required(false)
@@ -156,7 +159,7 @@ public class ChocoMinerApp {
 		options.addOption(taskOption);
 		options.addOption(repOption);
 		options.addOption(measureOption);
-
+		options.addOption(meaOption);
 		options.addOption(datasetOption);
 		options.addOption(queryfileOption);
 		options.addOption(guiOption);
@@ -224,88 +227,90 @@ public class ChocoMinerApp {
 			String[] items = line.getOptionValue(option).split(":");
 			for (String s : items) {
 				ArrayList<Integer> values = new ArrayList<Integer>();
-				if(s.contains("-")) {
+				if (s.contains("-")) {
 					int start = Integer.parseInt(s.split("-")[0]);
 					int end = Integer.parseInt(s.split("-")[1]);
 
-					for(int i =start;i<=end;i++)
-							values.add(i);
-				}else if(s.contains(",")){
-				for (String v : s.split(",")) 
-					values.add(Integer.parseInt(v));
-				}else {
-					
+					for (int i = start; i <= end; i++)
+						values.add(i);
+				} else if (s.contains(",")) {
+					for (String v : s.split(","))
+						values.add(Integer.parseInt(v));
+				} else {
+
 					values.add(Integer.parseInt(s));
 
 				}
 				forbiddenI.add(values);
 
-				}
+			}
 			break;
 		}
 		case "mandatoryitem": {
 			String[] items = line.getOptionValue(option).split(":");
 			for (String s : items) {
 				ArrayList<Integer> values = new ArrayList<Integer>();
-				if(s.contains("-")) {
+				if (s.contains("-")) {
 					int start = Integer.parseInt(s.split("-")[0]);
 					int end = Integer.parseInt(s.split("-")[1]);
 
-					for(int i =start;i<=end;i++)
-							values.add(i);
-				}else if(s.contains(",")){
-					for (String v : s.split(",")) 
+					for (int i = start; i <= end; i++)
+						values.add(i);
+				} else if (s.contains(",")) {
+					for (String v : s.split(","))
 						values.add(Integer.parseInt(v));
-					}else {
-						
-						values.add(Integer.parseInt(s));
+				} else {
 
-					}
-				mandatoryI.add(values);}
+					values.add(Integer.parseInt(s));
+
+				}
+				mandatoryI.add(values);
+			}
 			break;
 		}
 		case "forbiddenitemh": {
 			String[] items = line.getOptionValue(option).split(":");
 			for (String s : items) {
 				ArrayList<Integer> values = new ArrayList<Integer>();
-				if(s.contains("-")) {
+				if (s.contains("-")) {
 					int start = Integer.parseInt(s.split("-")[0]);
 					int end = Integer.parseInt(s.split("-")[1]);
 
-					for(int i =start;i<=end;i++)
-							values.add(i);
-				}else if(s.contains(",")){
-				for (String v : s.split(",")) 
-					values.add(Integer.parseInt(v));
-				}else {
-					
+					for (int i = start; i <= end; i++)
+						values.add(i);
+				} else if (s.contains(",")) {
+					for (String v : s.split(","))
+						values.add(Integer.parseInt(v));
+				} else {
+
 					values.add(Integer.parseInt(s));
 
 				}
 				forbiddenIH.add(values);
 
-				}
+			}
 			break;
 		}
 		case "mandatoryitemh": {
 			String[] items = line.getOptionValue(option).split(":");
 			for (String s : items) {
 				ArrayList<Integer> values = new ArrayList<Integer>();
-				if(s.contains("-")) {
+				if (s.contains("-")) {
 					int start = Integer.parseInt(s.split("-")[0]);
 					int end = Integer.parseInt(s.split("-")[1]);
 
-					for(int i =start;i<=end;i++)
-							values.add(i);
-				}else if(s.contains(",")){
-					for (String v : s.split(",")) 
+					for (int i = start; i <= end; i++)
+						values.add(i);
+				} else if (s.contains(",")) {
+					for (String v : s.split(","))
 						values.add(Integer.parseInt(v));
-					}else {
-						
-						values.add(Integer.parseInt(s));
+				} else {
 
-					}
-				mandatoryIH.add(values);}
+					values.add(Integer.parseInt(s));
+
+				}
+				mandatoryIH.add(values);
+			}
 			break;
 		}
 		case "dc":

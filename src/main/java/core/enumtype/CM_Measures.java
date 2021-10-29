@@ -5,6 +5,8 @@ public enum CM_Measures {
 	// Itemsets representations 
 	AllConfidenceIs,
 	CrossSupportIs,
+	Freq,
+	Rare,
 	// Association rules representations
 	AddedValueAR,
 	CasualConfidenceAR,
@@ -49,8 +51,7 @@ public enum CM_Measures {
 	StandardizedLiftAR,
 	VaryingRatesLiaisonAR,
 	YulesQAR,
-	YulesYAR
-
+	YulesYAR;
 
 
 
