@@ -19,12 +19,12 @@ import java.util.HashMap;
 import org.chocosolver.*;
 
 /**
- * Propagator of the checker of the constraint AllConfidence
+ * Propagator of the checker of the constraint CrossSupportRatio
  * 
  * @author Nassim
  * @since 28/10/2021
  */
-public class PropAllConfidence extends Propagator<BoolVar> {
+public class PropCrossSupportRatio extends Propagator<BoolVar> {
 	BoolVar[] vars;
 	static BoolVar[] vars3;
 	double beta = 0.0;
@@ -37,7 +37,7 @@ public class PropAllConfidence extends Propagator<BoolVar> {
 	HashMap<Integer, BitSet> History = new HashMap<>();
 	HashMap<Integer, ArrayList<Integer>> ZerosHistory = new HashMap<>();
 
-	public PropAllConfidence(BoolVar[] vars, double beta, Dataset d) {
+	public PropCrossSupportRatio(BoolVar[] vars, double beta, Dataset d) {
 		super(vars, PropagatorPriority.LINEAR, false);
 
 		this.vars = vars;
@@ -54,7 +54,7 @@ public class PropAllConfidence extends Propagator<BoolVar> {
 	}
 
 	/**
-	 * Check AllConfidence
+	 * Check CrossSupportRatio
 	 * 
 	 * @author Nassim
 	 * @since 28/10/2021
@@ -69,7 +69,7 @@ public class PropAllConfidence extends Propagator<BoolVar> {
 	}
 
 	/**
-	 * Check AllConfidence
+	 * Check CrossSupportRatio
 	 * 
 	 * @author Nassim
 	 * @since 28/10/2021
@@ -105,7 +105,7 @@ public class PropAllConfidence extends Propagator<BoolVar> {
 			this.Instanciation = (BitSet) d.complete.clone();
 
 			ArrayList<Double> supps = new ArrayList<Double>();
-			double allconf = 0.0;
+			double crosssupport = 0.0;
 			for (int i = 0; i < vars.length; i++) 
 				if(vars[i].isInstantiatedTo(1))
 				Instanciation.and(d.DataBinary_H.get(i));
@@ -113,10 +113,9 @@ public class PropAllConfidence extends Propagator<BoolVar> {
 				if(vars[i].isInstantiatedTo(1))
 					supps.add(frequency_item(i, Instanciation));
 			}
-			double SuppX = frequency_itemset(Instanciation);
-			allconf=SuppX / Collections.max(supps);
-			if(Collections.max(supps)!=0) {
-			if ( allconf < this.beta) {
+			crosssupport= Collections.min(supps) / Collections.max(supps);
+			if(Collections.max(supps)!=0 ) {
+			if ( crosssupport < this.beta) {
 
 				for (int i = 0; i < vars.length; i++) {
 					vars[i].removeValue(1, null);

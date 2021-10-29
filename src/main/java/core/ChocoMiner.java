@@ -9,6 +9,7 @@ import org.chocosolver.solver.constraints.Constraint;
 import org.chocosolver.solver.variables.BoolVar;
 
 import core.Itemsets.measures.AllConfidence;
+import core.Itemsets.measures.CrossSupportRatio;
 import core.constraints.Frequent.Frequent;
 import core.constraints.FrequentSubs.FrequentSubs;
 import core.constraints.Generator.Generator;
@@ -64,7 +65,7 @@ public class ChocoMiner {
 			break;
 		}
 		case CrossSupportIs: {
-			Frequent c1 = new Frequent(X, experience.getMinsup(), dataset);
+			CrossSupportRatio c1 = new CrossSupportRatio(X, experience.getMinsup(), dataset);
 			query.add(c1);
 			break;
 		}
