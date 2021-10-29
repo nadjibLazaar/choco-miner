@@ -1,30 +1,24 @@
 package core;
 
-import static org.chocosolver.solver.search.strategy.Search.minDomLBSearch;
-import static org.chocosolver.util.tools.ArrayUtils.append;
-
-import java.awt.Toolkit;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.chocosolver.solver.Model;
-import org.chocosolver.solver.variables.BoolVar;
-import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.constraints.Constraint;
+import org.chocosolver.solver.variables.BoolVar;
 
-import dataset.parsers.Dataset;
-import core.constraints.*;
+import core.Itemsets.measures.AllConfidence;
 import core.constraints.Frequent.Frequent;
-import core.constraints.InfrequentSupers.InfrequentSupers;
 import core.constraints.FrequentSubs.FrequentSubs;
 import core.constraints.Generator.Generator;
 import core.constraints.Infrequent.Infrequent;
+import core.constraints.InfrequentSupers.InfrequentSupers;
 import core.constraints.closedpattern.ClosedPatternDC;
 import core.constraints.closedpattern.ClosedPatternWC;
-import core.enumtype.CM_Representation;
 import core.enumtype.CM_Task;
 import core.tools.FileManager;
+import dataset.parsers.Dataset;
 import expe.Experience;
 import util.Log;
 
@@ -63,7 +57,19 @@ public class ChocoMiner {
 
 		// Declare variables
 		X = model.boolVarArray(dataset.getNbItems()); // items
-
+		switch (experience.getMeasure()) {
+		case AllConfidenceIs: {
+			AllConfidence c1 = new AllConfidence(X, experience.getMeasureThreshold(), dataset);
+			query.add(c1);
+			break;
+		}
+		case CrossSupportIs: {
+			Frequent c1 = new Frequent(X, experience.getMinsup(), dataset);
+			query.add(c1);
+			break;
+		}
+		
+		}
 		switch (experience.getRep()) {
 		case FIs: {
 			Frequent c1 = new Frequent(X, experience.getMinsup(), dataset);

@@ -13,6 +13,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import core.enumtype.CM_Dataset;
+import core.enumtype.CM_Measures;
 import core.enumtype.CM_Representation;
 import core.enumtype.CM_Task;
 import expe.Experience.ExpeBuilder;
@@ -21,11 +22,13 @@ public class ChocoMinerApp {
 
 	private static String task;
 	private static String rep;
+	private static String measure;
+
 	private static String dataset;
 	private static String query;
 	private static long timeout;
 	private static int minsize, maxsize, nbpatterns;
-	private static double minsup, minconf;
+	private static double minsup, minconf,threshold;
 	private static ArrayList<ArrayList<Integer>> forbiddenI = new ArrayList<ArrayList<Integer>>();
 	private static ArrayList<ArrayList<Integer>> mandatoryI = new ArrayList<ArrayList<Integer>>();
 	private static ArrayList<ArrayList<Integer>> forbiddenIH = new ArrayList<ArrayList<Integer>>();
@@ -52,11 +55,13 @@ public class ChocoMinerApp {
 
 		task = CM_Task.ItemsetMining.toString();
 		rep = CM_Representation.FIs.toString();
+		measure = CM_Measures.AllConfidenceIs.toString();
 		dataset = CM_Dataset.MUSHROOM.toString().toLowerCase();
 		String query = "";
 		timeout = 0;
 		minsup = 10;
 		minconf = 90;
+		threshold= 50;
 		minsize = -1;
 		maxsize = -1;
 		verbose = false;
@@ -71,10 +76,10 @@ public class ChocoMinerApp {
 			checkOption(line, opt.getLongOpt());
 		}
 		// Build Experience
-		Experience expe = new Experience.ExpeBuilder().setTask(task).setRep(rep).setDataset(dataset).setQuery(query)
+		Experience expe = new Experience.ExpeBuilder().setTask(task).setRep(rep).setMeasure(measure).setDataset(dataset).setQuery(query)
 				.setTimeout(timeout).setMinsize(minsize).setMaxsize(maxsize).setForbiddenI(forbiddenI)
 				.setMandatoryI(mandatoryI).setForbiddenIH(forbiddenIH).setMandatoryIH(mandatoryIH).setVerbose(verbose)
-				.setGui(gui).setDC(dc).setMinsup(minsup).setMinconf(minconf).setNbpatterns(nbpatterns).build();
+				.setGui(gui).setDC(dc).setMinsup(minsup).setMinconf(minconf).setMeasureThresholdValue(threshold).setNbpatterns(nbpatterns).build();
 		// Launch Experience
 		expe.process();
 
@@ -92,6 +97,10 @@ public class ChocoMinerApp {
 		final Option repOption = Option.builder("r").longOpt("rep")
 				.desc("Predefined representation: FIs / FCIs / FMIs / RIs / RGIs / RMIs").hasArg(true)
 				.argName("pattern representation").required(false).build();
+		
+		final Option measureOption = Option.builder("m").longOpt("measure")
+				.desc("Predefined measures : ...").hasArg(true)
+				.argName("pattern measure").required(false).build();
 
 		final Option datasetOption = Option.builder("d").longOpt("dataset").desc("dataset file").hasArg(true)
 				.argName("dataset").required(false).build();
@@ -111,6 +120,8 @@ public class ChocoMinerApp {
 
 		final Option minconfOption = Option.builder("c").longOpt("minconf").hasArg(true)
 				.desc("minimum confidence (relative confidence(%)").required(false).build();
+		final Option thresholdOption = Option.builder("th").longOpt("threshold").hasArg(true)
+				.desc("Measure Threshold ").required(false).build();
 
 		final Option minsizeOption = Option.builder("sn").longOpt("minsize").hasArg(true)
 				.desc("Patterns minimum size constraint").required(false).build();
@@ -144,12 +155,15 @@ public class ChocoMinerApp {
 		final Options options = new Options();
 		options.addOption(taskOption);
 		options.addOption(repOption);
+		options.addOption(measureOption);
+
 		options.addOption(datasetOption);
 		options.addOption(queryfileOption);
 		options.addOption(guiOption);
 		options.addOption(limitOption);
 		options.addOption(minsupOption);
 		options.addOption(minconfOption);
+		options.addOption(thresholdOption);
 		options.addOption(minsizeOption);
 		options.addOption(forbiddenOption);
 		options.addOption(helpFileOption);
@@ -175,6 +189,9 @@ public class ChocoMinerApp {
 		case "rep":
 			rep = line.getOptionValue(option);
 			break;
+		case "measure":
+			measure = line.getOptionValue(option);
+			break;
 		case "dataset":
 			dataset = line.getOptionValue(option);
 			break;
@@ -189,6 +206,9 @@ public class ChocoMinerApp {
 			break;
 		case "minsup":
 			minsup = Double.parseDouble(line.getOptionValue(option));
+			break;
+		case "threshold":
+			threshold = Double.parseDouble(line.getOptionValue(option));
 			break;
 		case "minconf":
 			minconf = Double.parseDouble(line.getOptionValue(option));

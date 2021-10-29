@@ -12,6 +12,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.Option.Builder;
 
 import core.ChocoMiner;
+import core.enumtype.CM_Measures;
 import core.enumtype.CM_Representation;
 import core.enumtype.CM_Task;
 
@@ -19,11 +20,12 @@ public class Experience {
 
 	private String task;
 	private String rep;
+	private String measure;
 	private String dataset;
 	private String query;
 	private long timeout;
 	private int minsize, maxsize, nbpatterns;
-	private double minsup, minconf;
+	private double minsup, minconf,threshold;
 	private ArrayList<ArrayList<Integer>> forbiddenI = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Integer>> mandatoryI = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Integer>>  forbiddenIH = new ArrayList<ArrayList<Integer>> ();
@@ -33,6 +35,8 @@ public class Experience {
 	public Experience(ExpeBuilder expeBuilder) {
 		this.task = expeBuilder.task;
 		this.rep = expeBuilder.rep;
+		this.measure = expeBuilder.measure;
+		this.threshold=expeBuilder.threshold;
 		this.dataset = expeBuilder.dataset;
 		this.query = expeBuilder.query;
 		this.timeout = expeBuilder.timeout;
@@ -55,11 +59,13 @@ public class Experience {
 
 		private String task;
 		private String rep;
+		private String measure;
+
 		private String dataset;
 		private String query;
 		private long timeout;
 		private int minsize, maxsize, nbpatterns;
-		private double minsup, minconf;
+		private double minsup, minconf,threshold;
 		private ArrayList<ArrayList<Integer>> forbiddenI = new ArrayList<ArrayList<Integer>>();
 		private ArrayList<ArrayList<Integer>> mandatoryI = new ArrayList<ArrayList<Integer>>();
 		private ArrayList<ArrayList<Integer>>   forbiddenIH = new ArrayList<ArrayList<Integer>> ();
@@ -75,7 +81,10 @@ public class Experience {
 			this.rep = rep;
 			return this;
 		}
-
+		public ExpeBuilder setMeasure(String m) {
+			this.measure = m;
+			return this;
+		}
 		public ExpeBuilder setDataset(String dataset) {
 			this.dataset = dataset;
 			return this;
@@ -95,7 +104,10 @@ public class Experience {
 			this.minsup = minsup;
 			return this;
 		}
-
+		public ExpeBuilder setMeasureThresholdValue(double threshold) {
+			this.threshold = threshold;
+			return this;
+		}
 		public ExpeBuilder setMinconf(double minconf) {
 			this.minconf = minconf;
 			return this;
@@ -192,6 +204,9 @@ public class Experience {
 	public CM_Representation getRep() {
 		return CM_Representation.valueOf(rep);
 	}
+	public CM_Measures getMeasure() {
+		return CM_Measures.valueOf(measure);
+	}
 
 	public String getDataset() {
 		return dataset;
@@ -215,6 +230,9 @@ public class Experience {
 
 	public double getMinconf() {
 		return minconf;
+	}
+	public double getThreshold() {
+		return threshold;
 	}
 
 	public int getMaxsize() {
@@ -251,6 +269,10 @@ public class Experience {
 
 	public int getNbpatterns() {
 		return nbpatterns;
+	}
+
+	public double getMeasureThreshold() {
+		return threshold;
 	}
 
 }
