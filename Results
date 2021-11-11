@@ -38,3 +38,13 @@ INFOS: Experience  = expe.Experience@5a01ccaa
 | Propagations = 31
 | Backtracks = 21
 | Fails = 0
+nov. 11, 2021 6:28:57 PM core.ChocoMiner solve
+INFO: Experience  = expe.Experience@14acaea5
+| Number of solutions = 10
+| Time for the First solution = ,03 s 
+| Time = ,14 s 
+| Nodes = 54
+| Memory = 7,93 MB
+| Propagations = 108
+| Backtracks = 89
+| Fails = 35

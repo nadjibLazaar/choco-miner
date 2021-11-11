@@ -74,7 +74,7 @@ public class PropCrossSupportRatio extends Propagator<BoolVar> {
 	 * @author Nassim
 	 * @since 28/10/2021
 	 * @param item the item to check
-	 * @param X    BitSet representing the partial instantiation of the Antecedent
+	 * @param //X    BitSet representing the partial instantiation of the Antecedent
 	 *             return true if the AllConfident is respected by adding item false
 	 *             otherwise
 	 

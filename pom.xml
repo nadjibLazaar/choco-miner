@@ -3,7 +3,19 @@
   <groupId>fr.lirmm.coconut</groupId>
   <artifactId>chocoMiner</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Choco Miner</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <name>Choco Miner</name>
   
   
   
@@ -23,14 +35,14 @@
             <artifactId>commons-cli</artifactId>
             <version>1.4</version>
         </dependency>
-        
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    
+
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.13</version>
+          <scope>test</scope>
+      </dependency>
+
   </dependencies>
   
 </project>

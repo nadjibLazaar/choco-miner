@@ -46,7 +46,7 @@ public class FileManager {
 	/**
 	 * Constructor
 	 * 
-	 * @param fileName path of the .acq file
+	 * @param //fileName path of the .acq file
 	 * @throws IOException
 	 */
 	public FileManager(String filePath) throws IOException {

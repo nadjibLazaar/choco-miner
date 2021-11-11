@@ -9,3 +9,36 @@ INFOS: Instance  = ./datasets/lazaar.data
 | Propagations = 18
 | Backtracks = 1
 | Fails = 0
+nov. 11, 2021 6:33:00 PM core.constraints.closedpattern.ClosedPattern main
+INFO: Instance  = ./datasets/lazaar.data
+| Min_supp = 90.0% 
+| Number of solutions = 1
+| Time for the First solution = ,03 s 
+| Time = ,11 s 
+| Nodes = 1
+| Memory = 7,46 MB
+| Propagations = 18
+| Backtracks = 1
+| Fails = 0
+nov. 11, 2021 6:37:32 PM core.constraints.closedpattern.ClosedPattern main
+INFO: Instance  = ./datasets/lazaar.data
+| Min_supp = 90.0% 
+| Number of solutions = 1
+| Time for the First solution = ,01 s 
+| Time = ,06 s 
+| Nodes = 1
+| Memory = 7,46 MB
+| Propagations = 18
+| Backtracks = 1
+| Fails = 0
+nov. 11, 2021 6:42:53 PM core.constraints.closedpattern.ClosedPattern main
+INFO: Instance  = ./datasets/lazaar.data
+| Min_supp = 90.0% 
+| Number of solutions = 1
+| Time for the First solution = ,02 s 
+| Time = ,08 s 
+| Nodes = 1
+| Memory = 7,46 MB
+| Propagations = 18
+| Backtracks = 1
+| Fails = 0
