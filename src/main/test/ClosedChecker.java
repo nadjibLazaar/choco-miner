@@ -15,7 +15,7 @@ public class ClosedChecker {
         /*
         TODO launch ChocoMiner to update result
         ArrayList<DataObjectLine> chocoMinerResultLazaar = TestUtil.parser("");
-        assertTrue(condition);
+        assertTrue(spmfResultLazaar.containsAll(chocoMinerResultLazaar) && chocoMinerResultLazaar.containsAll(spmfResultLazaar));
          */
     }
 }
